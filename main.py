@@ -233,8 +233,6 @@ def print_frame(df):
         df['implied_prob_difference'] = df['implied_prob_difference'].apply(lambda x: str(x) + '%')
 
 
-        print(df['implied_prob'])
-
     #round difference to 2 decimal places
     if 'difference' in df.columns:
         df['difference'] = round(df['difference'], 2)
@@ -254,6 +252,17 @@ choice = input("Enter your choice: ")
 if choice == '1' or choice == 'csv':
     # Open most recent file
     file = 'nhl_odds.csv'
+
+    #gET MOST RECENT FILe (saved time is in title)
+    files = os.listdir(folder)
+
+
+    if files:
+        files = [folder + f for f in files]
+        file = max(files, key=os.path.getctime)
+
+    print(f"Reading data from '{file}'")
+
     df = read_csv(file)
 elif choice == '2' or choice == 'api':
     # Read the data from the API
@@ -267,30 +276,6 @@ df['american_odds'] = pd.to_numeric(df['american_odds'])
 
 #round american odds to 0 decimal places
 df['american_odds'] = round(df['american_odds'], 0)
-
-# # Group by game and outcome to calculate average decimal odds
-# average_decimal_odds = df.groupby(['game_id', 'outcome'])['decimal_odds'].mean().reset_index()
-# average_decimal_odds.rename(columns={'decimal_odds': 'average_decimal_odds'}, inplace=True)
-
-# # Merge average decimal odds back into the main DataFrame
-# df = pd.merge(df, average_decimal_odds, on=['game_id', 'outcome'])
-
-# # Calculate the difference between bookmaker decimal odds and average decimal odds
-# df['decimal_difference'] = df['decimal_odds'] - df['average_decimal_odds']
-# df['average_american_odds'] = df['average_decimal_odds'].apply(lambda x: convert_odds(x, 'decimal', 'american'))
-# df['american_difference'] = df['american_odds'] - df['average_american_odds']
-
-# difference = df['decimal_odds'] - df['average_decimal_odds']
-# df['difference'] = difference
-
-# # Filter for value bets (e.g., odds significantly lower than average)
-# value_bets = df[df['difference'] > diff_threshold]  # Adjust threshold as needed
-
-# # Format American odds to include a + sign for positive values
-# value_bets['american_odds'] = value_bets['american_odds'].apply(format_american_odds)
-
-# print("Value bets:")
-# print(value_bets)
 
 better_odds = find_better_than_average_odds(df)
 print("Better odds:")
