@@ -1,0 +1,12 @@
+game_id,home_team,away_team,highest_positive_bookmaker,highest_positive_outcome,highest_positive_odds,average_positive_odds,lowest_negative_bookmaker,lowest_negative_outcome,lowest_negative_odds,average_negative_odds,difference,free_profit
+c82f22cb23af81e77b1e5c3e48852656,Washington Capitals,Ottawa Senators,betonlineag,Ottawa Senators,+141.0,+136.0,betrivers,Washington Capitals,-164.0,-161.0,-22.93,False
+a8c2520303768817d99b4f308d96e1cf,Minnesota Wild,Boston Bruins,betonlineag,Boston Bruins,+143.0,+137.0,draftkings,Minnesota Wild,-167.0,-162.0,-23.67,False
+e83ff8ec53b20d0c6ccd1e6f47cc9e91,Vegas Golden Knights,New Jersey Devils,lowvig,New Jersey Devils,+145.0,+141.0,draftkings,Vegas Golden Knights,-169.0,-166.0,-24.49,False
+09077b1ef72829d37950445383e81803,New York Rangers,New York Islanders,fanduel,New York Islanders,+116.0,+109.0,fanduel,New York Rangers,-141.0,-133.0,-24.85,False
+06e9549407b0ac1b3d7f2bf44b9515bd,Florida Panthers,Tampa Bay Lightning,betrivers,Tampa Bay Lightning,+118.0,+112.0,betrivers,Florida Panthers,-143.0,-133.0,-24.86,False
+db9750a02597ff73c6c54c68aeedc164,New York Rangers,Nashville Predators,betrivers,Nashville Predators,+150.0,+143.0,betrivers,New York Rangers,-182.0,-168.0,-31.82,False
+526d6be08ef61cd2f66e5dcd063a0c96,Chicago Blackhawks,Los Angeles Kings,lowvig,Chicago Blackhawks,+208.0,+199.0,draftkings,Los Angeles Kings,-250.0,-241.0,-42.0,False
+07bae813262c25cbf8bf34dbd0fbe646,Dallas Stars,St Louis Blues,betonlineag,St Louis Blues,+185.0,+182.0,betrivers,Dallas Stars,-227.0,-216.0,-42.27,False
+bc9874937bfd0edde3af410035879d46,Pittsburgh Penguins,Toronto Maple Leafs,betmgm,Pittsburgh Penguins,+145.0,+142.0,bovada,Toronto Maple Leafs,-189.0,-184.0,-43.68,False
+afbf86b8ff683597773798d55565ab56,Carolina Hurricanes,Calgary Flames,betonlineag,Calgary Flames,+261.0,+255.0,draftkings,Carolina Hurricanes,-323.0,-311.0,-61.58,False
+a18ccf810509cdc9bba2a58bf6df99a4,Toronto Maple Leafs,San Jose Sharks,fanduel,San Jose Sharks,+310.0,+292.0,mybookieag,Toronto Maple Leafs,-417.0,-383.0,-106.67,False
