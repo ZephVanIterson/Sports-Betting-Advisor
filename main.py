@@ -6,6 +6,7 @@ import sys
 from dotenv import load_dotenv
 
 diff_threshold = 0.1
+folder = 'saved_odds/'
 
 load_dotenv()
 API_KEY =os.getenv('API_KEY')
@@ -304,18 +305,6 @@ print_frame(results)
 # Save the data to a CSV file
 print("Save data? (y/n)")
 if input() == 'y':
-    df.to_csv('nhl_odds_' + datetime.datetime.now().strftime('%Y%m%d_%H%M%S') + '.csv', index=False)
+    df.to_csv(folder+'nhl_odds_' + datetime.datetime.now().strftime('%Y%m%d_%H%M%S') + '.csv', index=False)
     
 
-
-
-
-
-# Optional: Visualize the data
-# import matplotlib.pyplot as plt
-# plt.figure(figsize=(10, 6))
-# plt.scatter(df['average_decimal_odds'], df['decimal_odds'], alpha=0.5)
-# plt.xlabel('Average Decimal Odds')
-# plt.ylabel('Bookmaker Decimal Odds')
-# plt.title('NHL Odds Comparison')
-# plt.show()
