@@ -12,7 +12,7 @@ REM Commit the changes with a timestamp
 git commit -m "Automated daily update: %date% %time%"
 
 REM Push the changes to GitHub
-git push origin main
+git push origin website
 
 REM Close the terminal
 exit
