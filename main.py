@@ -121,36 +121,73 @@ def compare_highest_positive_to_lowest_negative(df):
     results = []
     for game_id, game_data in df.groupby('game_id'): #for each game
 
-        # Separate positive and negative odds
-        positive_odds = game_data[game_data['american_odds'] > 0]
-        negative_odds = game_data[game_data['american_odds'] < 0]
+        # # Separate positive and negative odds
+        # positive_odds = game_data[game_data['american_odds'] > 0]
+        # negative_odds = game_data[game_data['american_odds'] < 0]
+
+        #get bhome and away team
+        home_team = game_data['home_team'].iloc[0]
+        away_team = game_data['away_team'].iloc[0]
+
+        #separate home and away teams
+        home_odds = game_data[game_data['outcome'] == home_team]
+        away_odds = game_data[game_data['outcome'] == away_team]
 
         #find highest positive and lowest negative odds
 
-        if not positive_odds.empty and not negative_odds.empty:
-            # Find the highest positive odds
-            max_positive = positive_odds.loc[positive_odds['american_odds'].idxmax()]
-            # Find the lowest negative odds
-            max_negative = negative_odds.loc[negative_odds['american_odds'].idxmax()]
+        if not home_odds.empty and not away_odds.empty:
 
-            # Compare absolute values
-            if abs(max_positive['american_odds']) > abs(max_negative['american_odds']):
-                free_profit = True
+
+            max_home = home_odds.loc[home_odds['american_odds'].idxmax()]
+            max_away = away_odds.loc[away_odds['american_odds'].idxmax()]
+
+            # # Compare absolute values
+            # if abs(max_home['american_odds']) > abs(max_away['american_odds']):
+            #     free_profit = True
+            # else:
+            #     free_profit = False
+
+            #difference is positive value - negative value (or psoitve valuye - lower value)
+            if max_home['american_odds'] > max_away['american_odds']:
+                difference = abs(max_home['american_odds']) - abs(max_away['american_odds'])
+            elif max_home['american_odds'] < max_away['american_odds']:
+                difference = abs(max_away['american_odds']) - abs(max_home['american_odds'])
             else:
-                free_profit = False
+                difference = 0
+            
+
+            #get implied prob for each team
+            home_implied_prob = home_odds['implied_prob']
+            away_implied_prob = away_odds['implied_prob']
+
+            #get avg implied prob for each team
+            avg_home_implied_prob = home_implied_prob.mean()
+            avg_away_implied_prob = away_implied_prob.mean()
+
+
+            #convert implie prob to american odds
+            avg_home_american_odds = convert_odds(avg_home_implied_prob, 'implied_prob', 'american')
+            avg_away_american_odds = convert_odds(avg_away_implied_prob, 'implied_prob', 'american')
+
+
+
+
+            #avg_home_odds = home_odds['american_odds'].mean()
+            #avg_away_odds = away_odds['american_odds'].mean()
+
+
+
             results.append({
                 'game_id': game_id,
-                'home_team': max_positive['home_team'],
-                'away_team': max_positive['away_team'],
-                'max_positive_bookmaker': max_positive['bookmaker'],
-                'positive_outcome': max_positive['outcome'],
-                'max_positive_odds': format_american_odds(max_positive['american_odds']),
-                'average_positive_odds': format_american_odds(positive_odds['american_odds'].mean()),
-                'max_negative_bookmaker': max_negative['bookmaker'],
-                'negative_outcome': max_negative['outcome'],
-                'max_negative_odds': format_american_odds(max_negative['american_odds']),
-                'average_negative_odds': format_american_odds(negative_odds['american_odds'].mean()),
-                'difference': round(abs(max_positive['american_odds']) - abs(max_negative['american_odds']),2),
+                'home_team': max_home['home_team'],
+                'max_home_bookmaker': max_home['bookmaker'],
+                'max_home_odds': format_american_odds(max_home['american_odds']),
+                'mean_home_odds': format_american_odds(avg_home_american_odds),
+                'away_team': max_home['away_team'],
+                'max_away_bookmaker': max_away['bookmaker'],
+                'max_away_odds': format_american_odds(max_away['american_odds']),
+                'mean_away_odds': format_american_odds(avg_away_american_odds),
+                'difference': round(difference, 2),
             })
 
     #sort by difference
@@ -167,10 +204,19 @@ def find_better_than_average_odds(df):
     for game_id, game_data in df.groupby('game_id'):  # for each game
         for outcome, outcome_data in game_data.groupby('outcome'):  # for each outcome
             # Calculate the average odds for this outcome
-            avg_american_odds = outcome_data['american_odds'].mean()
+
+            #print all american odds for this outcome
+            if outcome == 'New York Rangers':
+                print(outcome_data['american_odds'])
+
+            #average negative and positve oddds leads to issues
+            #avg_american_odds = outcome_data['american_odds'].mean()
 
             implied_prob = outcome_data['implied_prob']
             avg_implied_prob = implied_prob.mean()
+
+            #comnvert from implied prob to american odds
+            avg_american_odds = convert_odds(avg_implied_prob, 'implied_prob', 'american')
 
             # Compare each bookmaker's odds to the average
             for _, row in outcome_data.iterrows():
