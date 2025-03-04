@@ -247,6 +247,50 @@ def print_frame(df):
 
     print(df.drop(columns=['game_id']))
 
+
+def update_info():
+    df = access_api(url)
+
+
+    # Ensure the 'american_odds' column is numeric
+    df['american_odds'] = pd.to_numeric(df['american_odds'])
+
+    #round american odds to 0 decimal places
+    df['american_odds'] = round(df['american_odds'], 0)
+
+    better_odds = find_better_than_average_odds(df)
+    print("Better odds:")
+    print_frame(better_odds)
+
+    #highest and lowest odds for wach game
+    results = compare_highest_positive_to_lowest_negative(df)
+    print("Results:")
+    print_frame(results)
+
+
+
+
+    df.to_csv(folder+'nhl_odds_' + datetime.datetime.now().strftime('%Y%m%d_%H%M%S') + '.csv', index=False)
+
+
+    folder = 'static/data/'
+    os.makedirs(folder, exist_ok=True)
+
+    # Save to JSON
+    better_odds.to_json(folder+'better_odds.json', orient='records')
+    results.to_json(folder+'results.json', orient='records')
+
+    #get current time
+    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    with open(folder+'last_updated.txt', 'w') as f:
+        f.write(current_time)
+        f.close()
+
+
+
+
+
+
 # Ask user if they want to read from CSV or API
 print("Do you want to read from csv or api?")
 print("1. csv")
@@ -269,8 +313,8 @@ if choice == '1' or choice == 'csv':
 
     df = read_csv(file)
 elif choice == '2' or choice == 'api':
-    # Read the data from the API
-    df = access_api(url)
+    update_info()
+
 else:
     print("Invalid input")
     sys.exit()
@@ -290,22 +334,10 @@ results = compare_highest_positive_to_lowest_negative(df)
 print("Results:")
 print_frame(results)
 
-
-#onlt do this if api was used
-if choice == '2' or choice == 'api':
-
-    df.to_csv(folder+'nhl_odds_' + datetime.datetime.now().strftime('%Y%m%d_%H%M%S') + '.csv', index=False)
-
-
-    folder = 'static/data/'
-    os.makedirs(folder, exist_ok=True)
-
-    # Save to JSON
-    better_odds.to_json(folder+'better_odds.json', orient='records')
-    results.to_json(folder+'results.json', orient='records')
-
-    #get current time
-    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    with open(folder+'last_updated.txt', 'w') as f:
-        f.write(current_time)
-        f.close()
+#todo
+#run pyython code daily (use windows task scheduler?)
+#then commit daily to update sit
+#this will flood repo with commits... 
+#maybe make secondary branch or repo for site,
+#one to write code for and one for the site
+#then merge code to site repo when ready
