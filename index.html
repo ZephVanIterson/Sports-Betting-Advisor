@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betting Odds Tracker</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <script>
+        async function fetchData(file, tableId) {
+            try {
+                const response = await fetch("static/data/" + file);
+                if (!response.ok) {
+                    throw new Error("Failed to load " + file);
+                }
+                const data = await response.json();
+                displayTable(data, tableId);
+            } catch (error) {
+                document.getElementById(tableId).innerHTML = `<p class="error">Error loading data.</p>`;
+                console.error(error);
+            }
+        }
+
+        async function loadLastUpdated(datetimeId) {
+            try {
+                const response = await fetch("static/data/last_updated.txt");
+                if (!response.ok) {
+                    throw new Error("Failed to load last updated time.");
+                }
+                const lastUpdated = await response.text();
+                document.getElementById(datetimeId).innerHTML = `Data last updated on: ${lastUpdated}`;
+            } catch (error) {
+                document.getElementById(datetimeId).innerHTML = "Last updated time not available.";
+                console.error(error);
+            }
+        }
+    
+        function displayTable(data, tableId) {
+            if (!data.length) {
+                document.getElementById(tableId).innerHTML = "<p>No data available</p>";
+                return;
+            }
+            
+            const table = document.createElement("table");
+            const thead = document.createElement("thead");
+            const tbody = document.createElement("tbody");
+    
+            // Table headers, excluding game_id
+            const headers = Object.keys(data[0]).filter(key => key !== "game_id");
+            const headerRow = document.createElement("tr");
+            headers.forEach(header => {
+                const th = document.createElement("th");
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+    
+            // Table body
+            data.forEach(row => {
+                const tr = document.createElement("tr");
+                headers.forEach(header => {
+                    const td = document.createElement("td");
+                    td.textContent = row[header] || 'N/A'; // In case any field is missing
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+    
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            document.getElementById(tableId).innerHTML = "";
+            document.getElementById(tableId).appendChild(table);
+        }
+
+        window.onload = function () {
+            fetchData("better_odds.json", "betterOddsContainer");
+            fetchData("results.json", "resultsContainer");
+            loadLastUpdated("scrapedDatetime");  // Load the last updated time from last_updated.txt
+        };
+    </script>
+</head>
+<body>
+    <h1>Betting Odds Tracker</h1>
+    
+    <!-- Display the scraped date and time once at the top -->
+    <div id="scrapedDatetime">Loading last updated time...</div>
+    
+    <h2>Better Odds</h2>
+    <div id="betterOddsContainer">Loading...</div>
+    
+    <h2>Results</h2>
+    <div id="resultsContainer">Loading...</div>
+</body>
+</html>

@@ -51,6 +51,10 @@ def read_csv(file):
     if not os.path.exists(file):
         print(f"Error: File '{file}' not found.")
         sys.exit()
+
+    #make sure to open csv if multiple files have same name
+
+    
     df = pd.read_csv(file)
     return df
 
@@ -138,13 +142,13 @@ def compare_highest_positive_to_lowest_negative(df):
                 'game_id': game_id,
                 'home_team': max_positive['home_team'],
                 'away_team': max_positive['away_team'],
-                'highest_positive_bookmaker': max_positive['bookmaker'],
+                'max_positive_bookmaker': max_positive['bookmaker'],
                 'positive_outcome': max_positive['outcome'],
-                'highest_positive_odds': format_american_odds(max_positive['american_odds']),
+                'max_positive_odds': format_american_odds(max_positive['american_odds']),
                 'average_positive_odds': format_american_odds(positive_odds['american_odds'].mean()),
-                'highest_negative_bookmaker': max_negative['bookmaker'],
+                'max_negative_bookmaker': max_negative['bookmaker'],
                 'negative_outcome': max_negative['outcome'],
-                'highest_negative_odds': format_american_odds(max_negative['american_odds']),
+                'max_negative_odds': format_american_odds(max_negative['american_odds']),
                 'average_negative_odds': format_american_odds(negative_odds['american_odds'].mean()),
                 'difference': round(abs(max_positive['american_odds']) - abs(max_negative['american_odds']),2),
             })
@@ -287,9 +291,21 @@ print("Results:")
 print_frame(results)
 
 
-# Save the data to a CSV file
-print("Save data? (y/n)")
-if input() == 'y':
-    df.to_csv(folder+'nhl_odds_' + datetime.datetime.now().strftime('%Y%m%d_%H%M%S') + '.csv', index=False)
-    
+#onlt do this if api was used
+if choice == '2' or choice == 'api':
 
+    df.to_csv(folder+'nhl_odds_' + datetime.datetime.now().strftime('%Y%m%d_%H%M%S') + '.csv', index=False)
+
+
+    folder = 'static/data/'
+    os.makedirs(folder, exist_ok=True)
+
+    # Save to JSON
+    better_odds.to_json(folder+'better_odds.json', orient='records')
+    results.to_json(folder+'results.json', orient='records')
+
+    #get current time
+    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    with open(folder+'last_updated.txt', 'w') as f:
+        f.write(current_time)
+        f.close()
