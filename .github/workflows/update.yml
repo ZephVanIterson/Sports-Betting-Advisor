@@ -1,6 +1,9 @@
 name: Update Data Daily
 
 on:
+  push:
+    branches:
+      - website  # Run workflow on pushes to the website branch
   schedule:
     - cron: '0 8 * * *'  # Run daily at 8:00 AM UTC
   workflow_dispatch:  # Allow manual triggering
