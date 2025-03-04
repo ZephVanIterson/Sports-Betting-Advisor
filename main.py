@@ -268,9 +268,10 @@ def update_info():
     print_frame(results)
 
 
+    folder = 'saved_odds/'
+    os.makedirs(folder, exist_ok=True)
 
-
-    df.to_csv(folder+'nhl_odds_' + datetime.datetime.now().strftime('%Y%m%d_%H%M%S') + '.csv', index=False)
+    df.to_csv(folder+'nhl_odds.csv', index=False)
 
 
     folder = 'static/data/'
@@ -291,53 +292,60 @@ def update_info():
 
 
 
-# Ask user if they want to read from CSV or API
-print("Do you want to read from csv or api?")
-print("1. csv")
-print("2. api")
-choice = input("Enter your choice: ")
+# # Ask user if they want to read from CSV or API
+# print("Do you want to read from csv or api?")
+# print("1. csv")
+# print("2. api")
+# choice = input("Enter your choice: ")
 
-if choice == '1' or choice == 'csv':
-    # Open most recent file
-    file = 'nhl_odds.csv'
+# if choice == '1' or choice == 'csv':
+#     # Open most recent file
+#     file = 'nhl_odds.csv'
 
-    #gET MOST RECENT FILe (saved time is in title)
-    files = os.listdir(folder)
+#     #gET MOST RECENT FILe (saved time is in title)
+#     files = os.listdir(folder)
 
 
-    if files:
-        files = [folder + f for f in files]
-        file = max(files, key=os.path.getctime)
+#     if files:
+#         files = [folder + f for f in files]
+#         file = max(files, key=os.path.getctime)
 
-    print(f"Reading data from '{file}'")
+#     print(f"Reading data from '{file}'")
 
-    df = read_csv(file)
-elif choice == '2' or choice == 'api':
+#     df = read_csv(file)
+# elif choice == '2' or choice == 'api':
+#     update_info()
+
+# else:
+#     print("Invalid input")
+#     sys.exit()
+
+# # Ensure the 'american_odds' column is numeric
+# df['american_odds'] = pd.to_numeric(df['american_odds'])
+
+# #round american odds to 0 decimal places
+# df['american_odds'] = round(df['american_odds'], 0)
+
+# better_odds = find_better_than_average_odds(df)
+# print("Better odds:")
+# print_frame(better_odds)
+
+# #highest and lowest odds for wach game
+# results = compare_highest_positive_to_lowest_negative(df)
+# print("Results:")
+# print_frame(results)
+
+# #todo
+# #run pyython code daily (use windows task scheduler?)
+# #then commit daily to update sit
+# #this will flood repo with commits... 
+# #maybe make secondary branch or repo for site,
+# #one to write code for and one for the site
+# #then merge code to site repo when ready
+
+
+def main():
     update_info()
 
-else:
-    print("Invalid input")
-    sys.exit()
-
-# Ensure the 'american_odds' column is numeric
-df['american_odds'] = pd.to_numeric(df['american_odds'])
-
-#round american odds to 0 decimal places
-df['american_odds'] = round(df['american_odds'], 0)
-
-better_odds = find_better_than_average_odds(df)
-print("Better odds:")
-print_frame(better_odds)
-
-#highest and lowest odds for wach game
-results = compare_highest_positive_to_lowest_negative(df)
-print("Results:")
-print_frame(results)
-
-#todo
-#run pyython code daily (use windows task scheduler?)
-#then commit daily to update sit
-#this will flood repo with commits... 
-#maybe make secondary branch or repo for site,
-#one to write code for and one for the site
-#then merge code to site repo when ready
+if __name__ == '__main__':
+    main()
