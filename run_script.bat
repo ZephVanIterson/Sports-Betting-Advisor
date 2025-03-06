@@ -25,4 +25,5 @@ REM Switch back to the original branch
 git checkout %CURRENT_BRANCH%
 
 REM Close the terminal
-exit
+REM exit
+pause
