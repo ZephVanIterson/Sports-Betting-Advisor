@@ -3,6 +3,15 @@
 REM Store the current branch name
 for /f "tokens=*" %%a in ('git rev-parse --abbrev-ref HEAD') do set CURRENT_BRANCH=%%a
 
+REM Store if there are uncommitted changes
+git status --porcelain > nul
+if errorlevel 1 (
+    set UNCOMMITTED_CHANGES=false
+) else (
+    set UNCOMMITTED_CHANGES=true
+    git stash
+)
+
 REM Run the Python script
 C:\Users\zepht\AppData\Local\Programs\Python\Python312\python.exe D:\Github\Sports-Betting-Advisor\main.py
 
@@ -24,6 +33,10 @@ git push origin website
 REM Switch back to the original branch
 git checkout %CURRENT_BRANCH%
 
+REM Restore stashed changes if they existed
+if %UNCOMMITTED_CHANGES%==true (
+    git stash pop
+)
+
 REM Close the terminal
-REM exit
 pause
