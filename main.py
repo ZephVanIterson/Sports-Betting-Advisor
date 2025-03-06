@@ -148,12 +148,19 @@ def compare_highest_positive_to_lowest_negative(df):
             #     free_profit = False
 
             #difference is positive value - negative value (or psoitve valuye - lower value)
-            if max_home['american_odds'] > max_away['american_odds']:
+            
+            #if both negative or both positive,
+            if max_home['american_odds'] > 0 and max_away['american_odds'] > 0: #both positive (SHOULD NEVER HAPPEN)
+                difference = (max_home['american_odds']-100) + (max_away['american_odds']-100)
+            elif max_home['american_odds'] < 0 and max_away['american_odds'] < 0: #both negative
+                difference =(max_home['american_odds'] + 100) + (max_away['american_odds'] + 100)
+            elif max_home['american_odds'] > 0 and max_away < 0: #home positive, away negative
                 difference = abs(max_home['american_odds']) - abs(max_away['american_odds'])
-            elif max_home['american_odds'] < max_away['american_odds']:
+            elif max_home['american_odds'] < 0 and max_away > 0: #home negative, away positive
                 difference = abs(max_away['american_odds']) - abs(max_home['american_odds'])
             else:
                 difference = 0
+
             
 
             #get implied prob for each team
