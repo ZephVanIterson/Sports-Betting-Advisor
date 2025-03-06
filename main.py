@@ -154,9 +154,9 @@ def compare_highest_positive_to_lowest_negative(df):
                 difference = (max_home['american_odds']-100) + (max_away['american_odds']-100)
             elif max_home['american_odds'] < 0 and max_away['american_odds'] < 0: #both negative
                 difference =(max_home['american_odds'] + 100) + (max_away['american_odds'] + 100)
-            elif max_home['american_odds'] > 0 and max_away < 0: #home positive, away negative
+            elif max_home['american_odds'] > 0 and max_away['american_odds'] < 0: #home positive, away negative
                 difference = abs(max_home['american_odds']) - abs(max_away['american_odds'])
-            elif max_home['american_odds'] < 0 and max_away > 0: #home negative, away positive
+            elif max_home['american_odds'] < 0 and max_away['american_odds'] > 0: #home negative, away positive
                 difference = abs(max_away['american_odds']) - abs(max_home['american_odds'])
             else:
                 difference = 0
