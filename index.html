@@ -59,7 +59,7 @@
                 const tr = document.createElement("tr");
                 headers.forEach(header => {
                     const td = document.createElement("td");
-                    td.textContent = row[header] || 'N/A'; // In case any field is missing
+                    td.textContent = row[header] ?? 'N/A'; // In case any field is missing
                     tr.appendChild(td);
                 });
                 tbody.appendChild(tr);
