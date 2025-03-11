@@ -1,21 +1,19 @@
 @echo off
 
+REM Navigate to the repository directory
+cd /d D:\Github\Sports-Betting-Advisor
+
 REM Store the current branch name
 for /f "tokens=*" %%a in ('git rev-parse --abbrev-ref HEAD') do set CURRENT_BRANCH=%%a
 
-REM Store if there are uncommitted changes
-git status --porcelain > nul
-if errorlevel 1 (
-    set UNCOMMITTED_CHANGES=false
-) else (
-    set UNCOMMITTED_CHANGES=true
+REM Check if the current branch is not the website branch
+if not "%CURRENT_BRANCH%"=="website" (
+    REM Stash changes if not on the website branch
     git stash
+    set STASHED_CHANGES=true
+) else (
+    set STASHED_CHANGES=false
 )
-
-
-
-REM Navigate to the repository directory
-cd /d D:\Github\Sports-Betting-Advisor
 
 REM Checkout the website branch (switch to it)
 git checkout website
@@ -35,8 +33,8 @@ git push origin website
 REM Switch back to the original branch
 git checkout %CURRENT_BRANCH%
 
-REM Restore stashed changes if they existed
-if %UNCOMMITTED_CHANGES%==true (
+REM Restore stashed changes if they were stashed
+if %STASHED_CHANGES%==true (
     git stash pop
 )
 
