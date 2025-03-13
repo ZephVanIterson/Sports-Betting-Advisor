@@ -234,9 +234,9 @@ def find_better_than_average_odds(df):
                         difference = row['american_odds'] - avg_american_odds
                     elif row['american_odds'] < 0 and avg_american_odds< 0: #both negative
                         difference = avg_american_odds - row['american_odds']
-                    elif row['american_odds'] > 0 and avg_american_odds['american_odds'] < 0: # positive, avg negative
+                    elif row['american_odds'] > 0 and avg_american_odds < 0: # positive, avg negative
                         difference = (abs(row['american_odds']) -100) + (abs(avg_american_odds) - 100) 
-                    elif row['american_odds'] < 0 and avg_american_odds['american_odds'] > 0: # negative, avg positive
+                    elif row['american_odds'] < 0 and avg_american_odds > 0: # negative, avg positive
                         difference = (abs(avg_american_odds) - 100) + (abs(row['american_odds']) - 100)
                     else:
                         difference = 0
