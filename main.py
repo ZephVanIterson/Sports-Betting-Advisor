@@ -229,6 +229,20 @@ def find_better_than_average_odds(df):
             for _, row in outcome_data.iterrows():
                 if row['american_odds'] > avg_american_odds:
 
+                    #if both negative or both positive,
+                    if row['american_odds'] > 0 and avg_american_odds > 0: #both positive 
+                        difference = row['american_odds'] - avg_american_odds
+                    elif row['american_odds'] < 0 and avg_american_odds< 0: #both negative
+                        difference = avg_american_odds - row['american_odds']
+                    elif row['american_odds'] > 0 and avg_american_odds['american_odds'] < 0: # positive, avg negative
+                        difference = (abs(row['american_odds']) -100) + (abs(avg_american_odds) - 100) 
+                    elif row['american_odds'] < 0 and avg_american_odds['american_odds'] > 0: # negative, avg positive
+                        difference = (abs(avg_american_odds) - 100) + (abs(row['american_odds']) - 100)
+                    else:
+                        difference = 0
+
+
+
                     #check if game id and outcomne is already in results
                     if any(d['game_id'] == game_id and d['outcome'] == outcome for d in results):
                         #check if the current bookmaker has better odds than the one in the results
@@ -237,7 +251,7 @@ def find_better_than_average_odds(df):
                                 if row['american_odds'] > pd.to_numeric(d['american_odds']):
                                     d['bookmaker'] = row['bookmaker']
                                     d['american_odds'] = row['american_odds']
-                                    d['difference'] = row['american_odds'] - avg_american_odds
+                                    d['difference'] = round(difference, 2)
                                     d['implied_prob'] = row['implied_prob']
                                     d['implied_prob_difference'] = avg_implied_prob - row['implied_prob']
 
@@ -252,7 +266,7 @@ def find_better_than_average_odds(df):
                             'bookmaker': row['bookmaker'],
                             'american_odds': format_american_odds(row['american_odds']),
                             'average_american_odds': format_american_odds(avg_american_odds),
-                            'difference': round(row['american_odds'] - avg_american_odds, 2),
+                            'difference':   round(difference, 2),
                             'implied_prob': row['implied_prob'],
                             'average_implied_prob': avg_implied_prob,
                             'implied_prob_difference': ( avg_implied_prob - row['implied_prob'])
