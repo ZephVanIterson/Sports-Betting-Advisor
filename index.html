@@ -83,37 +83,49 @@
     
     <!-- Display the scraped date and time once at the top -->
     <div id="scrapedDatetime">Loading last updated time...</div>
-    
+    <!-- Better Odds Than Average -->
     <h2>Better Odds Than Average</h2>
     <div class="description">
         <p>
-            The <strong>Better Odds Than Average</strong> table shows bookmakers offering odds that are better than the average across all bookmakers for each game and outcome. This helps identify potential value bets where the odds are more favorable than the market average.
+            The <strong>Better Odds Than Average</strong> table highlights situations where a bookmaker offers odds that are stronger than the market average for a given game and outcome. 
+            By comparing individual bookmaker lines against the consensus, this table helps identify potential value bets where the odds are more favorable than what most sportsbooks provide.
         </p>
-        <p>
-            Key columns:
+        <details>
+            <summary><strong>Column Explanations</strong></summary>
             <ul>
-                <li><strong>Bookmaker</strong>: The bookmaker offering the better odds.</li>
-                <li><strong>American Odds</strong>: The odds offered by the bookmaker.</li>
-                <li><strong>Average American Odds</strong>: The average odds across all bookmakers.</li>
-                <li><strong>Difference</strong>: The difference between the bookmaker's odds and the average odds.</li>
+                <li><strong>Bookmaker</strong> – The sportsbook offering the better-than-average odds.</li>
+                <li><strong>American Odds</strong> – The odds provided by that bookmaker in American format (+/-).</li>
+                <li><strong>Average American Odds</strong> – The average odds across all bookmakers.</li>
+                <li><strong>Difference</strong> – The gap between the bookmaker’s odds and the overall market average.</li>
+                <li><strong>Implied Probability</strong> – The win probability implied by the bookmaker’s odds.</li>
+                <li><strong>Average Implied Probability</strong> – The market average of the implied probabilities across all bookmakers.</li>
+                <li><strong>Implied Probability Difference</strong> – The difference between the bookmaker’s implied probability and the market average.</li>
             </ul>
-        </p>
+        </details>
     </div>
     <div id="betterOddsContainer">Loading...</div>
-    
+
+    <!-- Best Odds per Game -->
     <h2>Best Odds per Game</h2>
     <div class="description">
         <p>
-            The <strong>Best Odds per Game</strong> table shows the best odds you can get for either team for each game across bookmakers. If you want to bet on any game, this table shows what site you should bet on. This analysis also helps identify potential arbitrage opportunities where the odds discrepancy between bookmakers could lead to a guaranteed profit.
+            The <strong>Best Odds per Game</strong> table shows the most favorable odds available for each team across all bookmakers. 
+            By comparing the top odds for both the home and away teams, this table helps bettors maximize potential returns. 
+            It can also highlight possible arbitrage opportunities when differences between bookmakers’ odds are large enough to secure a guaranteed profit.
         </p>
-        <p>
-            Key columns:
+        <details>
+            <summary><strong>Column Explanations</strong></summary>
             <ul>
-                <li><strong>Highest Positive Odds</strong>: The best odds for the underdog (positive odds).</li>
-                <li><strong>Lowest Negative Odds</strong>: The best odds for the favorite (negative odds).</li>
-                <li><strong>Difference</strong>: The difference between the highest positive and lowest negative odds.</li>
+                <li><strong>Home Team / Away Team</strong> – The two teams in the matchup.</li>
+                <li><strong>Max Home Bookmaker</strong> – The sportsbook offering the best odds for the home team.</li>
+                <li><strong>Max Home Odds</strong> – The best available odds for the home team.</li>
+                <li><strong>Mean Home Odds</strong> – The average odds for the home team across all bookmakers.</li>
+                <li><strong>Max Away Bookmaker</strong> – The sportsbook offering the best odds for the away team.</li>
+                <li><strong>Max Away Odds</strong> – The best available odds for the away team.</li>
+                <li><strong>Mean Away Odds</strong> – The average odds for the away team across all bookmakers.</li>
+                <li><strong>Difference</strong> – The spread between the best home and away odds, useful for spotting large discrepancies.</li>
             </ul>
-        </p>
+        </details>
     </div>
     <div id="resultsContainer">Loading...</div>
 </body>
