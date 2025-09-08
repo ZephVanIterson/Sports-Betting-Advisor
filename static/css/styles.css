@@ -61,3 +61,101 @@ tr:nth-child(even) {
 .description ul li {
     margin-bottom: 5px;
 }
+
+/* Tab Styles */
+.tab-container {
+    background-color: #f4f4f4;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.tab-nav {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tab-nav li {
+    flex: 1;
+}
+
+.tab-nav button {
+    width: 100%;
+    padding: 15px 20px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-nav button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.tab-nav button.active {
+    background-color: white;
+    border-bottom: 3px solid #007bff;
+    color: #007bff;
+}
+
+.tab-content {
+    display: none;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.coming-soon {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.coming-soon h2 {
+    color: #6c757d;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.coming-soon p {
+    color: #6c757d;
+    font-size: 1.2em;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.sport-icon {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .tab-nav {
+        flex-direction: column;
+    }
+    
+    .tab-nav button {
+        border-bottom: 1px solid #ddd;
+        border-right: none;
+    }
+    
+    .tab-nav button.active {
+        border-bottom: 3px solid #007bff;
+    }
+}
