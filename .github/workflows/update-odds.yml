@@ -1,0 +1,65 @@
+name: Update sports odds
+
+on:
+  schedule:
+    - cron: "17 06 * * *"
+      timezone: "America/Toronto"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-odds-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out the website branch
+        uses: actions/checkout@v7
+        with:
+          ref: website
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Run offline tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Fetch current odds
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+        run: python main.py
+
+      - name: Commit updated website data
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- \
+            static/data/nhl_better_odds.json \
+            static/data/nhl_results.json \
+            static/data/nba_better_odds.json \
+            static/data/nba_results.json \
+            static/data/nfl_better_odds.json \
+            static/data/nfl_results.json \
+            static/data/last_updated.txt
+
+          if git diff --cached --quiet; then
+            echo "No website data changed."
+            exit 0
+          fi
+
+          git commit -m "Automated daily odds update"
+          git push origin HEAD:website
