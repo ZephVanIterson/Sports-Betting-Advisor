@@ -21,27 +21,49 @@ async function loadLastUpdated(datetimeId) {
             throw new Error("Failed to load last updated time.");
         }
         const lastUpdated = await response.text();
-        document.getElementById(datetimeId).textContent = `Data last updated on: ${lastUpdated}`;
-        updateArchiveWarning(lastUpdated);
+        const updatedAt = parseLastUpdated(lastUpdated);
+        const formattedTimestamp = formatLastUpdated(updatedAt, lastUpdated);
+        document.getElementById(datetimeId).textContent = `Data last updated: ${formattedTimestamp}`;
+        updateArchiveWarning(updatedAt, formattedTimestamp);
     } catch (error) {
         document.getElementById(datetimeId).innerHTML = "Last updated time not available.";
         console.error(error);
     }
 }
 
-function updateArchiveWarning(lastUpdated) {
+function parseLastUpdated(lastUpdated) {
+    const timestamp = lastUpdated.trim();
+    const normalizedTimestamp = timestamp.includes('T')
+        ? timestamp
+        : timestamp.replace(' ', 'T');
+    return new Date(normalizedTimestamp);
+}
+
+function formatLastUpdated(updatedAt, fallback) {
+    if (Number.isNaN(updatedAt.getTime())) {
+        return fallback.trim();
+    }
+
+    return new Intl.DateTimeFormat('en-CA', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        timeZone: 'America/Toronto',
+        timeZoneName: 'short'
+    }).format(updatedAt);
+}
+
+function updateArchiveWarning(updatedAt, formattedTimestamp) {
     const warning = document.querySelector('.archive-warning');
     const warningDate = document.getElementById('archiveLastUpdated');
-    const normalizedTimestamp = lastUpdated.includes('T')
-        ? lastUpdated
-        : lastUpdated.replace(' ', 'T');
-    const updatedAt = new Date(normalizedTimestamp);
     const ageInHours = (Date.now() - updatedAt.getTime()) / (1000 * 60 * 60);
     const dataIsFresh = !Number.isNaN(ageInHours) && ageInHours >= 0 && ageInHours <= 48;
 
     warning.hidden = dataIsFresh;
     if (!dataIsFresh) {
-        warningDate.textContent = lastUpdated.trim();
+        warningDate.textContent = formattedTimestamp;
     }
 }
 
