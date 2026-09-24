@@ -27,6 +27,17 @@ h1, h2 {
     line-height: 1.5;
 }
 
+.automation-warning {
+    max-width: 900px;
+    margin: 0 auto 16px;
+    padding: 16px 20px;
+    color: #084298;
+    background-color: #cfe2ff;
+    border: 1px solid #b6d4fe;
+    border-radius: 8px;
+    line-height: 1.5;
+}
+
 [id$="Container"] {
     overflow-x: auto;
 }

@@ -4,9 +4,10 @@ A static website that compares NHL, NBA, and NFL moneyline odds across multiple
 bookmakers to identify stronger prices and show the best available line for each
 team.
 
-> **Project status:** Active. Odds update automatically once per day through
-> GitHub Actions. The website displays a warning whenever its data is more than
-> 48 hours old.
+> **Automation status (September 24, 2026):** GitHub's native scheduler is not
+> reliably creating scheduled runs for this repository. Manual workflow runs
+> still work, but daily automatic updates are temporarily degraded. Always check
+> the displayed update timestamp before using the odds.
 
 **Live site:** https://zephvaniterson.github.io/Sports-Betting-Advisor/
 
@@ -34,7 +35,10 @@ executed. Lines can move, limits may differ, and wagers can be rejected.
 
 ## Automation
 
-The scheduled workflow runs daily at 6:17 AM in the `America/Toronto` timezone:
+The workflow is configured to run daily at 6:17 AM in the
+`America/Toronto` timezone. GitHub's native scheduler is currently failing to
+create scheduled runs reliably, although manual `workflow_dispatch` runs work.
+The intended automation process is:
 
 1. GitHub Actions reads the workflow from the default `main` branch.
 2. It checks out the `website` branch, which is the GitHub Pages source.
