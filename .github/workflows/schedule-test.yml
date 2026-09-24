@@ -1,0 +1,13 @@
+name: Test scheduled workflows
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm scheduled trigger
+        run: date
