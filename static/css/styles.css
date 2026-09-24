@@ -9,15 +9,31 @@ h1, h2 {
     color: #333;
 }
 
-#scrapedDatetime {
+[id$="Datetime"] {
     font-size: 18px;
     color: #007bff;
     margin-bottom: 20px;
     font-weight: bold;
 }
 
+.archive-warning {
+    max-width: 900px;
+    margin: 0 auto 24px;
+    padding: 16px 20px;
+    color: #664d03;
+    background-color: #fff3cd;
+    border: 1px solid #ffecb5;
+    border-radius: 8px;
+    line-height: 1.5;
+}
+
+[id$="Container"] {
+    overflow-x: auto;
+}
+
 table {
     width: 80%;
+    min-width: 760px;
     margin: 20px auto;
     border-collapse: collapse;
     background: white;
@@ -142,6 +158,16 @@ tr:nth-child(even) {
 .sport-icon {
     font-size: 3em;
     margin-bottom: 20px;
+}
+
+.site-footer {
+    max-width: 900px;
+    margin: 40px auto 20px;
+    padding-top: 20px;
+    color: #666;
+    border-top: 1px solid #ddd;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 /* Responsive design */

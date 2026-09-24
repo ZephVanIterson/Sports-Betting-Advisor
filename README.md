@@ -1,10 +1,12 @@
 # Sports Betting Advisor
 
-A tool for analyzing **NHL betting odds** across multiple bookmakers to identify **value bets** and find the best available lines.
+A tool for comparing **NHL, NBA, and NFL betting odds** across multiple bookmakers to identify stronger prices and find the best available lines.
+
+> **Project status:** Automatic odds updates are currently paused. The hosted site displays historical data last updated on May 12, 2026. Do not use the displayed odds to make current betting decisions.
 
 **Live Tool**: https://zephvaniterson.github.io/Sports-Betting-Advisor/
 
-*Data updates every 24 hours.*
+The project previously updated every 24 hours from a Windows scheduled task. A move to GitHub Actions is planned.
 
 ## Features
 
@@ -28,7 +30,7 @@ The tool presents **two main tables**:
 - Built with **Python**
 - Website uses **HTML** and **CSS**
 - Fetches odds from *multiple major sportsbooks*
-- Focuses on **NHL games**
+- Supports **NHL, NBA, and NFL games**
 - Deployed via *GitHub Pages*
 
 ## Disclaimer

@@ -1,42 +1,47 @@
 @echo off
+setlocal
 
-REM Navigate to the repository directory
-cd /d D:\Github\Sports-Betting-Advisor
+REM Optional local fallback. GitHub Actions should be used for normal daily updates.
+pushd "%~dp0" || exit /b 1
 
-REM Store the current branch name
-for /f "tokens=*" %%a in ('git rev-parse --abbrev-ref HEAD') do set CURRENT_BRANCH=%%a
+for /f "tokens=*" %%a in ('git branch --show-current') do set "CURRENT_BRANCH=%%a"
+if /i not "%CURRENT_BRANCH%"=="website" (
+    echo Update cancelled: switch to the website branch first.
+    popd
+    exit /b 1
+)
 
-REM Check if the current branch is not the website branch
-if not "%CURRENT_BRANCH%"=="website" (
-    REM Stash changes if not on the website branch
-    git stash
-    set STASHED_CHANGES=true
+where py >nul 2>nul
+if errorlevel 1 (
+    python main.py
 ) else (
-    set STASHED_CHANGES=false
+    py -3 main.py
 )
 
-REM Checkout the website branch (switch to it)
-git checkout website
+if errorlevel 1 goto :error
 
-REM Run the Python script
-C:\Users\zepht\AppData\Local\Programs\Python\Python312\python.exe D:\Github\Sports-Betting-Advisor\main.py
+git add -- static/data/nhl_better_odds.json static/data/nhl_results.json static/data/nba_better_odds.json static/data/nba_results.json static/data/nfl_better_odds.json static/data/nfl_results.json static/data/last_updated.txt
+if errorlevel 1 goto :error
 
-REM Add all changes to Git
-git add .
+git diff --cached --quiet
+if not errorlevel 1 goto :no_changes
 
-REM Commit the changes with a timestamp
-git commit -m "Automated daily update: %date% %time%"
+git commit -m "Automated odds update"
+if errorlevel 1 goto :error
 
-REM Push the changes to GitHub
 git push origin website
+if errorlevel 1 goto :error
 
-REM Switch back to the original branch
-git checkout %CURRENT_BRANCH%
+echo Odds update completed and pushed successfully.
+popd
+exit /b 0
 
-REM Restore stashed changes if they were stashed
-if %STASHED_CHANGES%==true (
-    git stash pop
-)
+:no_changes
+echo Update completed, but no website data changed.
+popd
+exit /b 0
 
-REM Close the terminal
-pause
+:error
+echo Update failed. Existing website data was not intentionally replaced.
+popd
+exit /b 1
