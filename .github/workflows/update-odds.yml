@@ -2,7 +2,7 @@ name: Update sports odds
 
 on:
   schedule:
-    - cron: "17 06 * * *"
+    - cron: "01 09 * * *"
       timezone: "America/Toronto"
   workflow_dispatch:
 
